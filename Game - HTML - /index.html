@@ -1,3 +1,4 @@
+// Step 10
 <!doctype html>
 <html>
   <head>
@@ -167,10 +168,15 @@
           </div>
         </div>
       </div>
+      <button id='reset-button'>reset</button>
     </div>
     <script>
     // JS Code will go here
-
+      var resetButton = document.getElementById("reset-button");
+      var color = [];
+      for (var i = 0; i < 10; i++) {
+        color.push('square-' + i);
+      }
     </script>
   </body>
 </html>
