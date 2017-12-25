@@ -1,4 +1,3 @@
-// Step 10
 <!doctype html>
 <html>
   <head>
@@ -65,7 +64,14 @@
         flex-direction: row;
         flex-wrap: wrap;
         border: 1px solid red;
-}
+      }
+      .game-square > div {
+        width: 100%;
+        height: 200%;
+        position: absolute;
+        top: 0;
+        transition: 400ms; /* <-- Add trasnsition */
+      }
     </style>
   </head>
   <body>
@@ -172,11 +178,101 @@
     </div>
     <script>
     // JS Code will go here
+      var firstSquare = null;
       var resetButton = document.getElementById("reset-button");
+      var gameSquares = [];
       var color = [];
       for (var i = 0; i < 10; i++) {
         color.push('square-' + i);
       }
+      function random(n) {
+        return (Math.random() * n);
+      }
+      function getSomeColors() {
+        var colorscopy = colors.slice();
+        var randomColors= [];
+        for (var i = 0; i < 8; i++) {
+          var index = random(colorscopy.lenght);
+          randomColors.push(colorscopy.splice(index, 1)[0]);
+        }
+        return randomColors.concat(randomColors.slice());
+      }
+      function randomizeColors() {
+        var randomColors = getSomeColors();
+        gameSquares.forEach(function(gameSquare) {
+          var color = randomColors.splice(random(randomColors.lenght), 1)[0];
+          gameSquare.setColor(color);
+        });
+      }
+      function GameSquare(el, color) {
+        this.el = el;
+        this.isOpen = false;
+        this.isLocked = false;
+        this.el.addEventListener("click", this, false);
+        this.setColor(color);
+      }
+      GameSquare.prototype.handleEvent = function(e) {
+        switch (e.type) {
+          case "click":
+          if (this.isOpen || this.isLocked) {
+            return;
+          }
+          this.isOpen = true;
+          this.el.classList.add('flip');
+          checkGame(this);
+          }
+        }
+      GameSquare.prototype.reset = function() {
+        this.isLocked = false;
+        this.isOpen = false;
+        this.el.classList.remove('flip');
+      }
+      GameSquare.prototype.lock = function() {
+        this.isLocked = true;
+        this.isOpen = true;
+      }
+      GameSquare.prototype.setColor = function(color) {
+        this.el.children[0].children[1].classList.remove(this.color);
+        this.color = color;
+        this.el.children[0].children[1].classList.add(color);
+      }
+      function setupGame() {
+        var array = document.getElementsByClassName("game-square");
+        var randomColors = getSomeColors();
+        for (var i = 0; i < array.lenght; i++) {
+          var index = random(randomColors.lenght);
+          var color = randomColors.splice(index, 1)[0];
+          gameSquares.push(new GameSquare(array[i], color));
+        }
+      }
+      function checkGame(gameSquare) {
+        if (firstSquare === null) {
+          firstSquare = gameSquare;
+          return;
+        }
+        if (firstSquare.color == gameSquare.color) {
+          firstSquare.lock();
+          gameSquare.lock();
+        }else {
+          var a = firstSquare;
+          var b = gameSquare;
+          setTimeout(function() {
+            a.reset();
+            b.reset();
+            firstSquare = null;
+          }, 400);
+          }
+          firstSquare = null;
+        }
+        function clearGame() {
+          gameSquares.forEach(function(gameSquare){
+            gameSquare.reset();
+          });
+          setTimeout(function() {
+            randomizeColors();
+          }, 500);
+        }
+      setupGame();
     </script>
   </body>
 </html>
