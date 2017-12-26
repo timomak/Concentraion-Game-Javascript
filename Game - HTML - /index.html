@@ -5,9 +5,13 @@
     <title>Game</title>
     <style>
     /* CSS Space here*/
+      .container {
+        position: center;
+      }
       .game-square {
         box-sizing: border-box;
-        border: 1px solid #000;
+        border: 8px solid silver;
+        border-radius: 8px;
         width:100px;
         height: 100px;
         position: relative;
@@ -18,54 +22,67 @@
         height: 200%;
         position: absolute;
         top: 0;
-        transition: 400ms; /* <-- Add trasnsition */
+        transition: 400ms; /* <-- Add trasnsition */\
       }
       .game-square > div > div{
         height: 50%;
       }
       .game-square > div > div:first-child{
-        background-color: gray;
+        background-color: rgba(120,120,120,0.4);
+        border-radius: 8px;
       }
       .flip > div {
         top: -100%;
       }
       #game {
+        background-color: silver;
         width: 400px;
         height: 400px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        border: 1px solid red;
+        border: 3px solid rgba(255,255,255,0.4);
+        border-radius: 8px;
       }
       .square-0 {
         background-color: aqua;
+        border-radius: 80px;
       }
       .square-1 {
         background-color: bisque;
+        border-radius: 80px;
       }
       .square-2 {
         background-color: blue;
+        border-radius: 80px;
       }
       .square-3 {
         background-color: blueviolet;
+        border-radius: 80px;
       }
       .square-4 {
         background-color: brown;
+        border-radius: 80px;
       }
       .square-5 {
         background-color: cadetblue;
+        border-radius: 80px;
       }
       .square-6 {
         background-color: chartreuse;
+        border-radius: 80px;
       }
       .square-7 {
         background-color: chocolate;
+        border-radius: 80px;
       }
       .square-8 {
         background-color: coral;
+        border-radius: 80px;
       }
       .square-9 {
         background-color: cornflowerblue;
+        border-radius: 80px;
       }
     </style>
   </head>
