@@ -6,11 +6,14 @@
     <style>
     /* CSS Space here*/
       .container {
-        position: center;
+        position: absolute;
+        left: 50%;
+        margin-left: -250px;
+        text-align: center;
       }
       .game-square {
         box-sizing: border-box;
-        border: 8px solid silver;
+        border: 8px solid white;
         border-radius: 8px;
         width:100px;
         height: 100px;
@@ -28,15 +31,15 @@
         height: 50%;
       }
       .game-square > div > div:first-child{
-        background-color: rgba(120,120,120,0.4);
+        background-color: #44c767;
         border-radius: 8px;
       }
       .flip > div {
         top: -100%;
       }
       #game {
-        background-color: silver;
-        width: 400px;
+        background-color: white;
+        width: 500px;
         height: 400px;
         display: flex;
         flex-direction: row;
@@ -84,10 +87,48 @@
         background-color: cornflowerblue;
         border-radius: 80px;
       }
+      .square-10 {
+        background-color: silver;
+        border-radius: 80px;
+      }
+      .square-11 {
+        background-color: black;
+        border-radius: 80px;
+      }
+      .square-12 {
+        background-color: yellow;
+        border-radius: 80px;
+      }
+      .square-13 {
+        background-color: green;
+        border-radius: 80px;
+      }
+      #reset-button {
+        background-color: #44c767 !important; /* Green */
+        border: none;
+        color: white !important;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        }
+      #reset-button:hover {
+          background-color: #5cbf2a !important; /* Green */
+          }
+      .game-title {
+        background: #44c767;
+        height: 25px;
+        font: 20px arial;
+        color: white;
+        border-radius: 10px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
+      <h1 class="game-title">Concentration Game</h1>
       <div id="game">
 
         <div class="game-square">
@@ -201,9 +242,38 @@
             <div></div>
           </div>
         </div>
+        <div class="game-square">
+          <div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="game-square">
+          <div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="game-square">
+          <div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="game-square">
+          <div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
 
       </div>
-      <button id="reset-button">reset</button>
+    </br>
+      <button id="reset-button">Reset</button>
+      <!-- <a href="#" class="reset-button">reset</a> -->
     </div>
     <script>
     // JS Code will go here
@@ -212,7 +282,7 @@
       var gameSquares = [];
 
       var colors = [];
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 14; i++) {
         colors.push('square-' + i);
       }
       function random(n) {
@@ -221,7 +291,7 @@
       function getSomeColors() {
         var colorscopy = colors.slice();
         var randomColors= [];
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 10; i++) {
           var index = random(colorscopy.length);
           randomColors.push(colorscopy.splice(index, 1)[0]);
         }
