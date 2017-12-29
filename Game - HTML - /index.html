@@ -277,7 +277,7 @@
 
       </div>
     </br>
-      <div>Time left = <span id="timer"></span></div>
+      <div>Turns left = <span id="turns">30</span>  |  Time left = <span id="timer"></span></div>
     </br>
       <button id="reset-button">Reset</button>
       <h2 id='game-state'></h2>
@@ -289,17 +289,24 @@
       var firstSquare = null;
       var gameSquares = [];
       var colors = [];
-      var gameState = '1';
+      var gameState = "Playing";
+      var scoreToWin = 0;
+      var turns = 29;
 
-      switch (gameState) {
-        case '0':
-          alert("Working");
-          gameOver();
-          // document.getElementById('timer').innerHTML = 00 + ":" + 00;
+      function gameStateCheck() {
+        switch (gameState) {
+          case "Lost":
+            document.getElementById("game-state").textContent= "Game Over";
+            document.getElementById('timer').innerHTML = 00 + ":" + 00;
           break;
-        default:
+          case "Won":
+            document.getElementById("game-state").textContent= "You Won!";
+          break;
+          default:
+            timerOver = false;
+            document.getElementById("game-state").textContent= "";
+        }
       }
-
       for (var i = 0; i < 14; i++) {
         colors.push('square-' + i);
       }
@@ -336,14 +343,21 @@
         this.setColor(color);
       }
       GameSquare.prototype.handleEvent = function(e) {
-        switch (e.type) {
-          case "click":
-          if (this.isOpen || this.isLocked) {
-            return;
-          }
-          this.isOpen = true;
-          this.el.classList.add('flip');
-          checkGame(this);
+        if (gameState == "Playing") {
+          switch (e.type) {
+            case "click":
+              if (this.isOpen || this.isLocked) {
+                return;
+              }
+            this.isOpen = true;
+            this.el.classList.add('flip');
+            if (turns == 0) {
+              document.getElementById('turns').innerHTML = 0;
+              gameState = "Lost"
+              gameStateCheck();
+            }
+            checkGame(this);
+            }
           }
         }
 
@@ -372,14 +386,24 @@
         }
       }
       function checkGame(gameSquare) {
+        document.getElementById('turns').innerHTML = turns;
+
         if (firstSquare === null) {
           firstSquare = gameSquare;
           return;
         }
         if (firstSquare.color === gameSquare.color) {
+          turns = turns - 1;
           firstSquare.lock();
           gameSquare.lock();
+          scoreToWin = scoreToWin + 1;
+          if (scoreToWin == 10) {
+              gameState = "Won";
+              gameStateCheck();
+            return;
+          }
         } else {
+          turns = turns - 1;
           var a = firstSquare;
           var b = gameSquare;
           setTimeout(function() {
@@ -391,23 +415,28 @@
           firstSquare = null;
         }
         function clearGame() {
-          document.getElementById('timer').innerHTML = 00 + ":" + 59;
-          timerOver = false;
+          timerOver = true;
+          if (timerOver == true) {
+            document.getElementById('timer').innerHTML = 00 + ":" + 59;
+            timerOver = false;
+          }
           gameSquares.forEach(function(gameSquare){
             gameSquare.reset();
           });
           setTimeout(function() {
             randomizeColors();
           }, 500);
-          gameState = '1';
-        }
-        function gameOver() {
-          document.getElementById("game-state").textContent= "Game Over";
-          document.getElementById('timer').innerHTML = 00 + ":" + 00;
+          scoreToWin = 0;
+          turns = 30;
+          document.getElementById('turns').innerHTML = turns;
+          gameState = "Playing";
+          gameStateCheck();
+          startTimer();
         }
 
         function startTimer() {
-          if (timerOver == false && document.getElementById('timer').innerHTML != 00 + ":" + 01) {
+
+          if (timerOver == false && gameState == "Playing") {
             var presentTime = document.getElementById('timer').innerHTML;
             var timeArray = presentTime.split(/[:]+/);
             var m = timeArray[0];
@@ -415,10 +444,11 @@
             if(s == 59) {
               m = m - 1;
             }
-            if (m < 0) {
-              timerOver = true;
-              gameState = '0';
+            if (m < 0 || s == 0) {
+              gameState = 'Lost';
               document.getElementById('timer').innerHTML = 00 + ":" + 00;
+              alert(gameState);
+              gameStateCheck();
               return;
             }
 
