@@ -1,4 +1,4 @@
-<!-- Timofey Makhlay -->
+<!-- Timofey Makhlay Concentration Game-->
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -123,6 +123,11 @@
         font: 20px arial;
         color: white;
         border-radius: 10px;
+      }
+      .number-of-trials {
+        color: white;
+        position: absolute;
+        margin-left: 33px;
       }
     </style>
   </head>
@@ -272,16 +277,29 @@
 
       </div>
     </br>
+      <div>Time left = <span id="timer"></span></div>
+    </br>
       <button id="reset-button">Reset</button>
-      <!-- <a href="#" class="reset-button">reset</a> -->
+      <h2 id='game-state'></h2>
     </div>
     <script>
-    // JS Code will go here
+      document.getElementById('timer').innerHTML = 1 + ":" + 00;
       var resetButton = document.getElementById("reset-button");
+      var timerOver = false;
       var firstSquare = null;
       var gameSquares = [];
-
       var colors = [];
+      var gameState = '1';
+
+      switch (gameState) {
+        case '0':
+          alert("Working");
+          gameOver();
+          // document.getElementById('timer').innerHTML = 00 + ":" + 00;
+          break;
+        default:
+      }
+
       for (var i = 0; i < 14; i++) {
         colors.push('square-' + i);
       }
@@ -373,14 +391,52 @@
           firstSquare = null;
         }
         function clearGame() {
+          document.getElementById('timer').innerHTML = 00 + ":" + 59;
+          timerOver = false;
           gameSquares.forEach(function(gameSquare){
             gameSquare.reset();
           });
           setTimeout(function() {
             randomizeColors();
           }, 500);
+          gameState = '1';
+        }
+        function gameOver() {
+          document.getElementById("game-state").textContent= "Game Over";
+          document.getElementById('timer').innerHTML = 00 + ":" + 00;
+        }
+
+        function startTimer() {
+          if (timerOver == false && document.getElementById('timer').innerHTML != 00 + ":" + 01) {
+            var presentTime = document.getElementById('timer').innerHTML;
+            var timeArray = presentTime.split(/[:]+/);
+            var m = timeArray[0];
+            var s = checkSecond((timeArray[1] - 1));
+            if(s == 59) {
+              m = m - 1;
+            }
+            if (m < 0) {
+              timerOver = true;
+              gameState = '0';
+              document.getElementById('timer').innerHTML = 00 + ":" + 00;
+              return;
+            }
+
+            document.getElementById('timer').innerHTML =
+              m + ":" + s;
+            setTimeout(startTimer, 1000);
+          } else {
+            return;
+          }
+        }
+
+        function checkSecond(sec) {
+          if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+          if (sec < 0) {sec = "59"};
+          return sec;
         }
       setupGame();
+      startTimer();
     </script>
   </body>
 </html>
