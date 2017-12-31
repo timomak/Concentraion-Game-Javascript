@@ -1,6 +1,6 @@
 <!-- Timofey Makhlay Concentration Game-->
 <!DOCTYPE HTML>
-<html>
+<html> 
   <head>
     <title>Game</title>
     <style>
@@ -124,11 +124,17 @@
         color: white;
         border-radius: 10px;
       }
-      .number-of-trials {
-        color: white;
-        position: absolute;
-        margin-left: 33px;
+      #game-laws {
+        font: 20px arial;
+        color: #44c767;
+        margin-left: 10px;
+        padding: 10px;
       }
+      #game-state {
+        font: 50px arial;
+        color: #44c767;
+      }
+
     </style>
   </head>
   <body>
@@ -277,7 +283,7 @@
 
       </div>
     </br>
-      <div>Turns left = <span id="turns">30</span>  |  Time left = <span id="timer"></span></div>
+      <div id="game-laws">Turns left = <span id="turns">30</span>  |  Time left = <span id="timer"></span></div>
     </br>
       <button id="reset-button">Reset</button>
       <h2 id='game-state'></h2>
